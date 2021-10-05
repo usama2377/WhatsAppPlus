@@ -157,6 +157,7 @@ async function sendContacts() {
 
 async function sendChats() {
     let chats = []
+    let count = 0
     if (conn.chats.length != 0) {
         chats = conn.chats
         io.emit('chats', { chats: chats })
