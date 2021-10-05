@@ -36,19 +36,12 @@ app.post('/loadMessages', async function (req, res) {
             id: req.body.cursor.id,
             fromMe: req.body.cursor.fromMe === 'true',
         })
-        console.log(req.body.cursor)
         cursor = result.cursor
         messages = result.messages
-        console.log(req.body.jid)
-        console.log(cursor)
-        console.log(result)
-        console.log('with cursor')
     } else {
         result = await conn.loadMessages(req.body.jid, 25)
         cursor = result.cursor
         messages = result.messages
-        console.log(cursor)
-        console.log('without cursor')
     }
 
     let data = { messages: messages, cursor: cursor }
@@ -75,7 +68,6 @@ app.post('/fileUpload', function (req, res) {
         let filename = file.name.split('@')[0] + '_' + ((timestamp / 1000) | 0) + '.' + ext
         file.path = __dirname + '/public/Media/' + filename
         filePath = file.path
-        console.log('sending', (timestamp / 1000) | 0)
     })
 
     form.on('file', function (name, file) {
@@ -85,7 +77,6 @@ app.post('/fileUpload', function (req, res) {
         if (data.msgType === 'TextMessage') {
             await conn.sendMessage(data.remoteJid, data.text, MessageType.text)
         } else if (data.msgType === 'RecordedAudioMessage') {
-            console.log('RecordedAudioMessage triggered')
             await conn.sendMessage(
                 data.remoteJid,
                 { url: filePath }, // can send mp3, mp4, & ogg
@@ -131,7 +122,6 @@ app.post('/fileUpload', function (req, res) {
             )
         }
 
-        console.log('finished...')
         res.end('{"success" : "Updated Successfully", "status" : 200}')
     })
 })
@@ -186,7 +176,6 @@ async function sendChats() {
 function readCategories() {
     try {
         let categories = []
-        console.log(__dirname + '/categories.txt')
         const data = fs.readFileSync(__dirname + '/categories.txt', 'utf8').split('\n')
 
         for (let category of data) {
@@ -256,7 +245,6 @@ io.on('connection', async (socket) => {
     sendChats()
     sendContacts()
     socket.on('chatRead', async (msg) => {
-        console.log(msg)
         conn.chatRead(msg.jid)
     })
 
@@ -325,9 +313,6 @@ async function example() {
     try {
         conn.on('chat-update', async (chat) => {
             if (!chat.hasNewMessage) {
-                if (chat.messages) {
-                    console.log('updated message: ', chat.messages.first)
-                }
                 return
             }
 
