@@ -22,6 +22,13 @@ $(document).ready(function () {
                     showMessages(newMessages[category], true)
                 }
                 updateSendersName()
+                if (!$(this).hasClass('new-message-contact')) {
+                    console.log(true)
+                    items = document.querySelectorAll('.chat-bubble')
+                    last = items[items.length - 1]
+                    last.scrollIntoView()
+                    $('body, html').css('scrollTop', $('.chat-bubble').last().offset().top)
+                }
                 $(this).removeClass('new-message-contact')
                 $(this).find('.new-message').remove()
                 return
@@ -39,6 +46,13 @@ $(document).ready(function () {
         //   showMessages(newMessages[jid], false);
         // }
         updateSendersName()
+        if (!$(this).hasClass('new-message-contact')) {
+            console.log(true)
+            items = document.querySelectorAll('.chat-bubble')
+            last = items[items.length - 1]
+            last.scrollIntoView()
+            $('body, html').css('scrollTop', $('.chat-bubble').last().offset().top)
+        }
         $(this).removeClass('new-message-contact')
         $(this).find('.new-message').remove()
 
