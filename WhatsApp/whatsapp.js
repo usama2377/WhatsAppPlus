@@ -51,7 +51,7 @@ app.post('/loadMessages', async function (req, res) {
         console.log('without cursor')
     }
 
-    data = { messages: messages, cursor: cursor }
+    let data = { messages: messages, cursor: cursor }
     res.end(JSON.stringify(data))
     for (const m of messages) {
         console.log(messages)
